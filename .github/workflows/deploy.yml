@@ -35,12 +35,10 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
 
           script: |
-            docker pull ${{ secrets.DOCKER_USERNAME }}/simple-cicd-demo:latest
-
-            docker stop simple-cicd-demo || true
-            docker rm simple-cicd-demo || true
-
-            docker run -d \
-              --name simple-cicd-demo \
-              -p 8888:80 \
-              ${{ secrets.DOCKER_USERNAME }}/simple-cicd-demo:latest
+	    cd /root/src/simple-cicd-demo
+	    
+	    git pull origin main
+	    
+	    docker compose pull
+	    
+	    docker compose up -d
