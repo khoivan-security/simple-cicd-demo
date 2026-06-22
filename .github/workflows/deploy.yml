@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -35,10 +34,10 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
 
           script: |
-	    cd /root/src/simple-cicd-demo
-	    
-	    git pull origin main
-	    
-	    docker compose pull
-	    
-	    docker compose up -d
+            cd /root/src/simple-cicd-demo
+
+            git pull origin main
+
+            docker compose pull
+
+            docker compose up -d
