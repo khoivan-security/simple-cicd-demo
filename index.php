@@ -1,20 +1,81 @@
 <?php
-echo "<h1>Version 2</h1>";
-$conn = new mysqli(
-    getenv("DB_HOST"),
-    getenv("DB_USER"),
-    getenv("DB_PASS"),
-    getenv("DB_NAME")
-);
 
-if ($conn->connect_error) {
-    die("Database connection failed");
+$host = getenv('DB_HOST');
+$db   = getenv('DB_NAME');
+$user = getenv('DB_USER');
+$pass = getenv('DB_PASS');
+
+try {
+    $pdo = new PDO(
+        "mysql:host=$host;dbname=$db;charset=utf8",
+        $user,
+        $pass
+    );
+
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+} catch (PDOException $e) {
+    die("Database connection failed: " . $e->getMessage());
 }
 
-echo "<h1>User List</h1>";
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-$result = $conn->query("SELECT * FROM users");
+    $name = trim($_POST['name']);
 
-while ($row = $result->fetch_assoc()) {
-    echo $row["id"] . " - " . $row["name"] . "<br>";
+    if (!empty($name)) {
+
+        $stmt = $pdo->prepare(
+            "INSERT INTO users(name) VALUES (?)"
+        );
+
+        $stmt->execute([$name]);
+    }
+
+    header("Location: /");
+    exit;
 }
+
+$users = $pdo->query(
+    "SELECT * FROM users ORDER BY id ASC"
+)->fetchAll(PDO::FETCH_ASSOC);
+
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple CI/CD Demo V3</title>
+</head>
+<body>
+
+<h1>Simple CI/CD Demo V3</h1>
+
+<h2>Add User</h2>
+
+<form method="POST">
+    <input
+        type="text"
+        name="name"
+        placeholder="Enter name"
+        required
+    >
+
+    <button type="submit">
+        Add User
+    </button>
+</form>
+
+<hr>
+
+<h2>User List</h2>
+
+<ul>
+<?php foreach ($users as $user): ?>
+    <li>
+        <?= htmlspecialchars($user['name']) ?>
+    </li>
+<?php endforeach; ?>
+</ul>
+
+</body>
+</html>

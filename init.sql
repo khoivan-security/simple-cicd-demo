@@ -1,8 +1,10 @@
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100)
+    name VARCHAR(100) NOT NULL
 );
 
-INSERT INTO users(name) VALUES ('khoi');
-INSERT INTO users(name) VALUES ('hehe');
-INSERT INTO users(name) VALUES ('mike');
+INSERT INTO users(name)
+VALUES
+('Alice'),
+('Bob'),
+('Charlie');
