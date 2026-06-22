@@ -6,10 +6,10 @@ services:
       - "8888:80"
 
     environment:
-      DB_HOST: db
-      DB_NAME: demo
-      DB_USER: demo
-      DB_PASS: demo123
+      DB_HOST: ${DB_HOST}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
 
     depends_on:
       - db
@@ -18,10 +18,10 @@ services:
     image: mariadb:11
 
     environment:
-      MYSQL_ROOT_PASSWORD: root123
-      MYSQL_DATABASE: demo
-      MYSQL_USER: demo
-      MYSQL_PASSWORD: demo123
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASS}
 
     volumes:
       - db-data:/var/lib/mysql
